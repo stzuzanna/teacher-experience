@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Famly — Teacher Demo</title>
+    <meta name="description" content="Preview the Famly teacher experience in a safe demo." />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="root" class="app">
+      <!-- Desktop/laptop: iPad mini (landscape) frame -->
+      <section class="device-sim" aria-label="Device preview">
+        <div class="device-shell" role="img" aria-label="iPad mini frame">
+          <div class="device-bezel">
+            <div class="device-camera" aria-hidden="true"></div>
+            <div class="device-screen">
+              <img id="screen-desktop" alt="Famly teacher screen" decoding="async" />
+              <div id="empty-desktop" class="empty-state" hidden>
+                <div class="empty-content">
+                  <h1>Teacher demo</h1>
+                  <p>Add screenshots to <code>assets/screens</code> and map them in <code>screens.json</code>.</p>
+                  <p>Then open with <code>?screen=&lt;name&gt;</code> — e.g. <code>?screen=attendance</code>.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Touch devices: full-viewport preview (no frame) -->
+      <section class="touch-sim" aria-label="Touch preview">
+        <div class="touch-screen">
+          <img id="screen-touch" alt="Famly teacher screen" decoding="async" />
+          <div id="empty-touch" class="empty-state" hidden>
+            <div class="empty-content">
+              <h1>Teacher demo</h1>
+              <p>Add screenshots to <code>assets/screens</code> and map them in <code>screens.json</code>.</p>
+              <p>Open with <code>?screen=&lt;name&gt;</code> — e.g. <code>?screen=attendance</code>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <noscript>
+      This demo requires JavaScript to swap screenshots based on the link.
+    </noscript>
+    <script src="script.js" defer></script>
+  </body>
+</html>
+
