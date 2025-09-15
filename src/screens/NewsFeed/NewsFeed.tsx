@@ -43,16 +43,16 @@ export const NewsFeed: React.FC<NewsFeedProps> = ({
     {
       id: "birthday-post",
       kind: "text",
-      authorName: "Pre-schoolers",
-      authorAvatarUrl: "/avatar-5.png",
+      authorName: "Little Explorers",
+      authorAvatarUrl: "/avatar-4.png",
       publishedAt: new Date(Date.now() - 5 * 60 * 60 * 1000), // 5 hours ago
       content: "Happy birthday Ms. Jenkins! 🎉 We hope you have a wonderful day!"
     },
     {
       id: "halloween-poll",
       kind: "poll",
-      authorName: "Sandbox Childcare",
-      authorAvatarUrl: "/avatar-6.png",
+      authorName: "Little Explorers",
+      authorAvatarUrl: "/avatar-4.png",
       publishedAt: new Date(Date.now() - 24 * 60 * 60 * 1000), // 1 day ago
       question: "Which day works best for the Halloween party?",
       options: [
@@ -65,8 +65,8 @@ export const NewsFeed: React.FC<NewsFeedProps> = ({
     {
       id: "parent-teacher-conference",
       kind: "event",
-      authorName: "Claire Potter",
-      authorAvatarUrl: "/avatar-2.png",
+      authorName: "Little Explorers",
+      authorAvatarUrl: "/avatar-4.png",
       publishedAt: new Date(Date.now() - 5 * 60 * 60 * 1000),
       title: "Parent teacher conference",
       eventDateText: "Thu, 4th Sep 11:30am",
@@ -243,7 +243,7 @@ export const NewsFeed: React.FC<NewsFeedProps> = ({
                 {/* Footer */}
                 <div className="px-5 py-3 border-t flex items-center justify-end">
                   <Button className="px-5" disabled={!composerText.trim()} onClick={()=>{
-                    const newPost: Post = { id:`post-${Date.now()}`, kind:'text', authorName:'Susannah Stafford', authorAvatarUrl:'/avatar.png', publishedAt:new Date(), content: composerText.trim()} as any;
+                    const newPost: Post = { id:`post-${Date.now()}`, kind:'text', authorName:'Little Explorers', authorAvatarUrl:'/avatar-4.png', publishedAt:new Date(), content: composerText.trim()} as any;
                     setPosts((prev)=>[newPost, ...prev]);
                     setComposerText('');
                     setComposerImageUrl('');

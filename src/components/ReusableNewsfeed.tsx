@@ -396,7 +396,7 @@ export const ReusableNewsfeed: React.FC<ReusableNewsfeedProps> = ({
       {
         id: "p1",
         kind: "text",
-        authorName: "Sandbox Childcare",
+        authorName: "Little Explorers",
         publishedAt: new Date().toISOString(),
         title: "Welcome to the Newsfeed",
         content:
@@ -413,7 +413,7 @@ export const ReusableNewsfeed: React.FC<ReusableNewsfeedProps> = ({
       {
         id: "p3",
         kind: "poll",
-        authorName: "Sandbox Childcare",
+        authorName: "Little Explorers",
         publishedAt: new Date().toISOString(),
         question: "Which day works best for the Halloween party?",
         options: [
