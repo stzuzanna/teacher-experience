@@ -21,6 +21,10 @@ import React, { useState } from "react";
 import { useToast } from "../../contexts/ToastContext";
 import { ToastContainer } from "../../components/ui/toast";
 import { BottomNavBar } from "../../components/BottomNavBar";
+import { GlobalQuickActionsDrawer, QuickActionId } from "../../components/GlobalQuickActionsDrawer";
+import { NewsFeed } from "../NewsFeed/NewsFeed";
+import { Messages } from "../Messages/Messages";
+import { DeviceContainer } from "../../components/DeviceContainer";
 import {
   Avatar,
   AvatarFallback,
@@ -232,7 +236,11 @@ export const IpadMini = (): JSX.Element => {
   const [showDiaperToiletModal, setShowDiaperToiletModal] = useState(false);
   const [activeTab, setActiveTab] = useState("all");
   const [children, setChildren] = useState(childrenData);
-  const [activeNavItem, setActiveNavItem] = useState("news");
+  const [activeNavItem, setActiveNavItem] = useState("home");
+  const [showQuickActions, setShowQuickActions] = useState(false);
+  const [quickActionStep, setQuickActionStep] = useState<'menu'|'select'>('menu');
+  const [quickActionId, setQuickActionId] = useState<string | null>(null);
+  const [quickSelectedIds, setQuickSelectedIds] = useState<number[]>([]);
 
   // Check if any selected children are checked in
   const hasCheckedInChildren = selectedChildren.some(childId => {
@@ -547,14 +555,85 @@ export const IpadMini = (): JSX.Element => {
 
   const handleBottomNavClick = (itemId: string) => {
     setActiveNavItem(itemId);
-    // Add navigation logic here if needed
     console.log(`Bottom nav clicked: ${itemId}`);
   };
 
+  const handleNavigateBack = () => {
+    setActiveNavItem("home"); // Navigate back to home
+  };
+
+  // Open bottom drawer when global add button is clicked
+  React.useEffect(() => {
+    const onGlobalAdd = () => {
+      setQuickActionStep('menu');
+      setQuickActionId(null);
+      setQuickSelectedIds([]);
+      setShowQuickActions(true);
+    };
+    // @ts-ignore
+    window.addEventListener('global-add-click', onGlobalAdd);
+    return () => {
+      // @ts-ignore
+      window.removeEventListener('global-add-click', onGlobalAdd);
+    };
+  }, []);
+
+  // Render NewsFeed if "news" is active (embedded so the global drawer can appear over it)
+  if (activeNavItem === "news") {
+    return (
+      <DeviceContainer>
+        <NewsFeed 
+          onNavigateBack={handleNavigateBack}
+          activeNavItem={activeNavItem}
+          onNavClick={handleBottomNavClick}
+          embedded
+        />
+        {/* Drawer lives here so it can overlay any page */}
+        <GlobalQuickActionsDrawer
+          isOpen={showQuickActions}
+          onClose={() => setShowQuickActions(false)}
+          childrenData={children}
+          onConfirm={(action: QuickActionId, ids: number[]) => {
+            setSelectedChildren(ids);
+            setShowQuickActions(false);
+            handleStatusClick(action);
+          }}
+        />
+        
+      </DeviceContainer>
+    );
+  }
+
+  // Render Messages if "messages" is active
+  if (activeNavItem === "messages") {
+    return (
+      <DeviceContainer>
+        {/* Render Messages inline without its own container so overlays stack correctly */}
+        <Messages 
+          onNavigateBack={handleNavigateBack}
+          activeNavItem={activeNavItem}
+          onNavClick={handleBottomNavClick}
+          embedded
+        />
+        
+        <GlobalQuickActionsDrawer
+          isOpen={showQuickActions}
+          onClose={() => setShowQuickActions(false)}
+          childrenData={children}
+          onConfirm={(action: QuickActionId, ids: number[]) => {
+            setSelectedChildren(ids);
+            setShowQuickActions(false);
+            handleStatusClick(action);
+          }}
+        />
+      </DeviceContainer>
+    );
+  }
+
+  // Render main teacher interface for home and other nav items
   return (
-    <div className="bg-white flex justify-center items-center min-h-screen w-screen p-10 box-border">
-      <div className="bg-[#fcfcfd] overflow-hidden w-full h-full max-w-[900px] max-h-[600px] rounded-[32px] border-[3px] border-gray-800 shadow-2xl flex flex-col relative" style={{clipPath: 'inset(0)'}}>
-        <header className="flex w-full h-[72px] items-center justify-between px-6 py-3 bg-white flex-shrink-0">
+    <DeviceContainer>
+      <header className="flex w-full h-[72px] items-center justify-between px-6 py-3 bg-white flex-shrink-0">
           <div className="inline-flex items-center gap-1 relative flex-[0_0_auto]">
             <Button
               variant="outline"
@@ -725,6 +804,95 @@ export const IpadMini = (): JSX.Element => {
           )}
         </main>
 
+        {/* Bottom Drawer Quick Actions */}
+        {showQuickActions && (
+          <div className="absolute inset-0 z-50 flex items-end justify-center">
+            <div className="absolute inset-0 bg-black/40" onClick={() => setShowQuickActions(false)} />
+            <div className="relative w-[450px] bg-white rounded-t-2xl shadow-2xl border-t p-4 animate-in slide-in-from-bottom duration-200">
+              <div className="mx-auto h-1 w-16 rounded-full bg-[#59547a] mb-4" />
+              {quickActionStep === 'menu' && (
+                <>
+                  <h3 className="text-xl font-semibold text-gray-900 px-2 mb-3">Choose what to do</h3>
+                  <div className="space-y-3">
+                    <button className="w-full text-left" onClick={()=>{ setQuickActionId('checkin'); setQuickActionStep('select'); setQuickSelectedIds([]); }}>
+                      <div className="flex items-center justify-between p-4 border rounded-2xl hover:bg-gray-50">
+                        <div className="flex items-center gap-3 text-gray-900">
+                          <span className="text-green-600 text-xl">✓</span>
+                          <span className="text-[17px]">Check-in</span>
+                        </div>
+                        <span className="text-[#59547a]">›</span>
+                      </div>
+                    </button>
+                    <button className="w-full text-left" onClick={()=>{ setQuickActionId('checkout'); setQuickActionStep('select'); setQuickSelectedIds([]); }}>
+                      <div className="flex items-center justify-between p-4 border rounded-2xl bg-gray-50">
+                        <div className="flex items-center gap-3 text-gray-900">
+                          <span className="text-red-600 text-xl">✓</span>
+                          <div>
+                            <div className="text-[17px]">Check-out</div>
+                            <div className="text-sm text-[#59547a]">All children are checked out</div>
+                          </div>
+                        </div>
+                        <span className="text-[#59547a]">›</span>
+                      </div>
+                    </button>
+                    <button className="w-full text-left" onClick={()=>{ setQuickActionId('diaper'); setQuickActionStep('select'); setQuickSelectedIds([]); }}>
+                      <div className="flex items-center justify-between p-4 border rounded-2xl hover:bg-gray-50">
+                        <div className="flex items-center gap-3 text-gray-900">
+                          <span className="text-xl">🚼</span>
+                          <span className="text-[17px]">Log diaper or toilet</span>
+                        </div>
+                        <span className="text-[#59547a]">›</span>
+                      </div>
+                    </button>
+                    <button className="w-full text-left" onClick={()=>{ setQuickActionId('sleep'); setQuickActionStep('select'); setQuickSelectedIds([]); }}>
+                      <div className="flex items-center justify-between p-4 border rounded-2xl hover:bg-gray-50">
+                        <div className="flex items-center gap-3 text-gray-900">
+                          <span className="text-xl">🌙</span>
+                          <span className="text-[17px]">Log sleep</span>
+                        </div>
+                        <span className="text-[#59547a]">›</span>
+                      </div>
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {quickActionStep === 'select' && (
+                <>
+                  <h3 className="text-xl font-semibold text-gray-900 px-2 mb-4">Select children to {quickActionId === 'checkout' ? 'check out' : quickActionId === 'sleep' ? 'log sleep for' : quickActionId === 'diaper' ? 'log diaper/toilet for' : 'check in'}</h3>
+                  <div className="flex items-center justify-between px-2 mb-3">
+                    <div className="text-gray-700 font-medium">Demo classroom</div>
+                    <label className="flex items-center gap-2 text-gray-600"><input type="checkbox" className="accent-[#6b46c1]" checked={quickSelectedIds.length === children.length} onChange={(e)=> setQuickSelectedIds(e.target.checked ? children.map(c=>c.id) : [])} /> Select all</label>
+                  </div>
+                  <div className="grid grid-cols-3 gap-3 px-2 mb-4 max-h-60 overflow-auto">
+                    {children.map((ch) => {
+                      const selected = quickSelectedIds.includes(ch.id);
+                      return (
+                        <button key={ch.id} type="button" onClick={()=> setQuickSelectedIds(prev => selected ? prev.filter(id=>id!==ch.id) : [...prev, ch.id])} className={`flex flex-col items-center gap-2 p-2 rounded-xl border ${selected? 'border-[#6b46c1] bg-purple-50' : 'border-gray-200 hover:bg-gray-50'}`}>
+                          <div className="w-16 h-16 rounded-full bg-gray-200 overflow-hidden border-2 border-white shadow">
+                            {ch.avatar ? <img src={ch.avatar} alt={ch.name} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-gray-600">{ch.initials}</div>}
+                          </div>
+                          <div className="text-sm text-gray-800 truncate w-full text-center">{ch.name}</div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <div className="flex items-center justify-between gap-3 px-2 pt-2 border-t">
+                    <Button variant="outline" className="flex-1" onClick={()=>{ setQuickActionStep('menu'); setQuickSelectedIds([]); }}>Cancel</Button>
+                    <Button className="flex-1" disabled={quickSelectedIds.length===0} onClick={()=>{
+                      setSelectedChildren(quickSelectedIds);
+                      setShowQuickActions(false);
+                      if (quickActionId) {
+                        handleStatusClick(quickActionId);
+                      }
+                    }}>{quickActionId === 'checkout' ? 'Check-out' : quickActionId === 'sleep' ? 'Log sleep' : quickActionId === 'diaper' ? 'Log diaper/toilet' : 'Check-in'}</Button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Leave Modal */}
         {showLeaveModal && selectedLeaveType && (
           <LeaveModal
@@ -778,7 +946,6 @@ export const IpadMini = (): JSX.Element => {
           onClose={removeToast} 
           position="top-right"
         />
-      </div>
-    </div>
+    </DeviceContainer>
   );
 };

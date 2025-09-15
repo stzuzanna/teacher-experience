@@ -324,60 +324,44 @@ function RenderPollPost({ post, onVote, userVotes }: { post: PollPost; onVote: (
   const hasVoted = userVotes.length > 0;
 
   return (
-    <div style={{ display: "grid", gap: 12 }}>
-      <div style={{ fontWeight: 700, color: "#111827" }}>{post.question}</div>
-      <div style={{ display: "grid", gap: 10 }}>
+    <div className="grid gap-3">
+      <div className="font-semibold text-gray-900">{post.question}</div>
+      <div className="grid gap-2">
         {post.options.map((opt) => {
           const votes = opt.votes ?? 0;
           const pct = voters > 0 ? Math.round((votes / voters) * 100) : 0;
           const isSelected = userVotes.includes(opt.id);
+          const disabled = hasVoted && !isSelected && !(post.multiple);
           return (
             <button
               key={opt.id}
               onClick={() => onVote(opt.id)}
-              disabled={hasVoted && !isSelected && !(post.multiple)}
-              style={{
-                position: "relative",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                border: "1px solid #E5E7EB",
-                borderRadius: 12,
-                padding: "12px 14px",
-                background: "#FFFFFF",
-                overflow: "hidden",
-                cursor: hasVoted && !isSelected && !(post.multiple) ? "default" : "pointer",
-              }}
+              disabled={disabled}
+              className={`relative flex items-center justify-between rounded-xl border px-4 py-3 text-left overflow-hidden ${
+                isSelected ? 'border-[#6b46c1] bg-[#f5efff]' : 'border-gray-200 bg-white hover:bg-gray-50'
+              } ${disabled ? 'cursor-default opacity-90' : 'cursor-pointer'}`}
             >
-              {hasVoted && (
-                <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: `${pct}%`, background: "#EEF2FF" }} />
-              )}
-              <div style={{ display: "flex", alignItems: "center", gap: 10, position: "relative", zIndex: 1, color: "#111827" }}>
+              <div
+                className="absolute inset-y-0 left-0 bg-[#efe7ff]"
+                style={{ width: `${pct}%` }}
+              />
+              <div className="relative z-10 flex items-center gap-3 text-gray-900">
                 <span
-                  style={{
-                    width: 20,
-                    height: 20,
-                    borderRadius: 6,
-                    border: "1px solid #CBD5E1",
-                    background: isSelected ? "#6B46C1" : "#FFFFFF",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "white",
-                    fontSize: 12,
-                  }}
+                  className={`inline-flex items-center justify-center w-5 h-5 rounded-md border ${
+                    isSelected ? 'bg-[#6b46c1] border-[#6b46c1] text-white' : 'bg-white border-gray-300 text-transparent'
+                  }`}
                 >
-                  {isSelected ? "✓" : ""}
+                  ✓
                 </span>
-                <span>{opt.text}</span>
+                <span className="text-sm">{opt.text}</span>
               </div>
-              <span style={{ position: "relative", zIndex: 1, fontWeight: 700, color: "#4F46E5" }}>{pct}%</span>
+              <span className="relative z-10 font-semibold text-[#6b46c1]">{pct}%</span>
             </button>
           );
         })}
       </div>
-      <div style={{ fontSize: 12, color: "#6B7280" }}>
-        {Math.max(voters, totalSelections)} people voted {post.multiple ? "• Select multiple dates" : ""}
+      <div className="text-xs text-gray-500">
+        {Math.max(voters, totalSelections)} votes {post.multiple ? '• Select multiple options' : ''}
       </div>
     </div>
   );

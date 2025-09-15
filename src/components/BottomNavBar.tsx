@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "./ui/button";
 import { 
+  HomeIcon,
   FileTextIcon, 
   MessageSquareIcon, 
   BellIcon, 
@@ -20,10 +21,16 @@ interface BottomNavBarProps {
 }
 
 export const BottomNavBar: React.FC<BottomNavBarProps> = ({ 
-  activeItem = "news", 
+  activeItem = "home", 
   onItemClick 
 }) => {
   const navItems: NavItem[] = [
+    {
+      id: "home",
+      label: "Home",
+      icon: HomeIcon,
+      isActive: activeItem === "home"
+    },
     {
       id: "news",
       label: "News",
