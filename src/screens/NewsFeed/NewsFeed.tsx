@@ -122,7 +122,7 @@ export const NewsFeed: React.FC<NewsFeedProps> = ({
           
           {/* Post Creation Section (card style like screenshot) */}
           <div className="py-6 bg-transparent flex justify-center">
-            <div className="w-full max-w-[720px] mx-auto px-6">
+            <div className="w-full max-w-[600px] mx-auto">
               <div className="bg-white rounded-xl shadow-md border border-gray-100 p-5">
                 <button type="button" onClick={() => setShowComposer(true)} className="w-full text-left">
                   <div className="flex items-center gap-4">
