@@ -202,8 +202,7 @@ export const NewsFeed: React.FC<NewsFeedProps> = ({
                   <div className="ml-auto text-gray-400">Search for recipients...</div>
                   <ChevronDownIcon className="w-4 h-4 text-gray-500" />
                 </div>
-                {/* Toolbar removed (plain text input only) */}
-                <div className="px-5 py-3 border-b text-gray-500 text-sm">Plain text</div>
+                {/* Toolbar removed */}
                 {/* Editor area */}
                 <div className="px-5 py-4">
                   <textarea value={composerText} onChange={(e)=>setComposerText(e.target.value)} placeholder="Write a post here..." className="w-full h-40 border-0 outline-none resize-none" />
