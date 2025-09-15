@@ -61,6 +61,19 @@ export const NewsFeed: React.FC<NewsFeedProps> = ({
         { id: "monday", text: "Monday", votes: 3 }
       ],
       multiple: false
+    },
+    {
+      id: "parent-teacher-conference",
+      kind: "event",
+      authorName: "Claire Potter",
+      authorAvatarUrl: "/avatar-2.png",
+      publishedAt: new Date(Date.now() - 5 * 60 * 60 * 1000),
+      title: "Parent teacher conference",
+      eventDateText: "Thu, 4th Sep 11:30am",
+      rsvpByText: "Wed, 3rd Sep",
+      groupsText: "Explorers (Staff), Explorers (Children)",
+      statsText: "0 adults, 50 no reply",
+      recipientsText: "Recipients: Sandbox Childcare"
     }
   ];
 

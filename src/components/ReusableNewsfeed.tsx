@@ -13,7 +13,7 @@ import { BASE_PATH } from "../constants";
 // No external UI libs. Styles are inline/local to this component.
 
 // Types
-export type PostKind = "text" | "photo" | "poll";
+export type PostKind = "text" | "photo" | "poll" | "event";
 
 export interface BasePost {
   id: string;
@@ -35,6 +35,16 @@ export interface PhotoPost extends BasePost {
   caption?: string;
 }
 
+export interface EventPost extends BasePost {
+  kind: "event";
+  title: string;
+  eventDateText: string; // e.g., "Thu, 4th Sep 11:30am"
+  rsvpByText: string; // e.g., "Wed, 3rd Sep"
+  groupsText: string; // e.g., "Explorers (Staff), Explorers (Children)"
+  statsText: string; // e.g., "0 adults, 50 no reply"
+  recipientsText?: string; // e.g., "Recipients: Sandbox Childcare"
+}
+
 export interface PollOption {
   id: string;
   text: string;
@@ -49,7 +59,7 @@ export interface PollPost extends BasePost {
   voters?: number; // total voters (used for multiple selection percentage)
 }
 
-export type Post = TextPost | PhotoPost | PollPost;
+export type Post = TextPost | PhotoPost | PollPost | EventPost;
 
 export interface ReusableNewsfeedProps {
   initialPosts?: Post[];
@@ -424,6 +434,8 @@ export const ReusableNewsfeed: React.FC<ReusableNewsfeedProps> = ({
   const [reactions, setReactions] = useState<Record<string, string>>({});
   const [comments, setComments] = useState<Record<string, string[]>>({});
   const [pollVotes, setPollVotes] = useState<Record<string, string[]>>({});
+  const [activeEventId, setActiveEventId] = useState<string | null>(null);
+  const [eventReplies, setEventReplies] = useState<Record<string, { hasReplied: boolean; isAttending: boolean | null; attendeeCount: number; comment: string }>>({});
   const [baseLikes, setBaseLikes] = useState<Record<string, number>>(() => {
     const map: Record<string, number> = {};
     posts.forEach((p, idx) => {
@@ -618,11 +630,172 @@ export const ReusableNewsfeed: React.FC<ReusableNewsfeedProps> = ({
             );
           }
 
+          if (post.kind === "event") {
+            return (
+              <EventCard
+                key={post.id}
+                post={post as EventPost}
+                onOpenRSVP={() => setActiveEventId(post.id)}
+              />
+            );
+          }
+
           return null;
         })}
       </div>
+
+      {activeEventId && (
+        <EventRSVPOverlay
+          post={posts.find(p => p.id === activeEventId) as EventPost}
+          state={eventReplies[activeEventId] ?? { hasReplied: false, isAttending: null, attendeeCount: 1, comment: '' }}
+          onClose={() => setActiveEventId(null)}
+          onStateChange={(s) => setEventReplies(prev => ({ ...prev, [activeEventId]: s }))}
+        />
+      )}
     </div>
   );
 };
 
 export default ReusableNewsfeed;
+
+// ----- Event components -----
+
+function EventCard({ post, onOpenRSVP }: { post: EventPost; onOpenRSVP: () => void }) {
+  const published = formatRelative(coerceDate(post.publishedAt));
+  return (
+    <Card className="relative w-full bg-white rounded-xl shadow-sm">
+      <CardContent className="p-0">
+        <div className="flex flex-col gap-3 px-4 py-4">
+          <div className="flex items-start gap-3">
+            <Avatar className="w-10 h-10">
+              <AvatarImage src={post.authorAvatarUrl || `${BASE_PATH}/avatar-2.png`} alt={post.authorName} />
+              <AvatarFallback>{post.authorName.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <div className="flex-1">
+              <div className="text-sm text-gray-900"><span className="font-medium">{post.authorName}</span> invited you to an event.</div>
+              <div className="text-xs text-gray-500 mt-1">{published || 'Today'}</div>
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-gray-200 bg-white">
+            <div className="p-4">
+              <div className="font-semibold text-gray-900 mb-2">{post.title}</div>
+              <div className="space-y-2 text-gray-600 text-sm">
+                <div className="flex items-center gap-3">
+                  <CalendarIcon />
+                  <span>{post.eventDateText}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <ClockIcon />
+                  <span>RSVP: {post.rsvpByText}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <GroupsIcon />
+                  <span>{post.groupsText}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <DocIcon />
+                  <span>{post.statsText}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Button className="mt-2 bg-[#6b46c1] hover:bg-[#5a39a8]" onClick={onOpenRSVP}>Show and RSVP</Button>
+
+          {post.recipientsText && (
+            <div className="text-xs text-gray-500">{post.recipientsText}</div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function EventRSVPOverlay({ post, state, onClose, onStateChange }: { post: EventPost; state: { hasReplied: boolean; isAttending: boolean | null; attendeeCount: number; comment: string }; onClose: () => void; onStateChange: (s: { hasReplied: boolean; isAttending: boolean | null; attendeeCount: number; comment: string }) => void; }) {
+  const [attendeeCount, setAttendeeCount] = useState(state.attendeeCount);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [comment, setComment] = useState(state.comment);
+  const [isAttending, setIsAttending] = useState<boolean | null>(state.isAttending);
+  const [hasReplied, setHasReplied] = useState(state.hasReplied);
+
+  const commitState = (s: Partial<typeof state>) => onStateChange({ hasReplied, isAttending, attendeeCount, comment, ...s });
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
+      <div className="w-full max-w-[720px] bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <header className="bg-[#6b46c1] text-white">
+          <div className="flex items-center justify-between px-4 py-3">
+            <button aria-label="Close" className="p-2" onClick={onClose}>←</button>
+            <div className="font-semibold">Calendar</div>
+            <div className="w-6" />
+          </div>
+        </header>
+
+        <div className="px-6 py-5">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">{post.title}</h2>
+          <div className="space-y-3 mb-4 text-sm text-gray-700">
+            <div className="flex items-center gap-3"><CalendarIcon /><span>{post.eventDateText}</span></div>
+            <div className="flex items-center gap-3"><ClockIcon /><span>RSVP: {post.rsvpByText}</span></div>
+            <div className="flex items-center gap-3"><GroupsIcon /><span>{post.groupsText}</span></div>
+            <div className="flex items-center gap-3"><DocIcon /><span>{post.statsText}</span></div>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold text-gray-800">How many are attending?</h3>
+            <div className="flex items-center justify-between">
+              <span className="text-lg text-gray-800">Abby</span>
+              <div className="relative">
+                <Button variant="outline" onClick={() => setShowDropdown(!showDropdown)} className="flex items-center justify-between w-32 h-10 px-3 bg-white border-gray-200 text-gray-700">
+                  <span>{attendeeCount} {attendeeCount === 1 ? 'adult' : 'adults'}</span>
+                </Button>
+                {showDropdown && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                    {[1,2,3,4,5].map((c) => (
+                      <button key={c} onClick={() => { setAttendeeCount(c); setShowDropdown(false); commitState({ attendeeCount: c }); }} className="w-full px-4 py-2 text-left hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg">{c} {c===1?'adult':'adults'}</button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <textarea placeholder="Comment (if any)" value={comment} onChange={(e)=>{ setComment(e.target.value); commitState({ comment: e.target.value }); }} className="w-full h-20 p-3 border border-gray-200 rounded-lg resize-none text-gray-700" />
+
+            {!hasReplied ? (
+              <div className="flex gap-4">
+                <Button variant="outline" onClick={()=>{ setIsAttending(false); setHasReplied(true); commitState({ isAttending: false, hasReplied: true }); }} className="flex-1 h-11 border-2 border-gray-200 bg-white text-gray-700">Not attending</Button>
+                <Button onClick={()=>{ setIsAttending(true); setHasReplied(true); commitState({ isAttending: true, hasReplied: true }); }} className="flex-1 h-11 bg-[#6b46c1] hover:bg-[#5a39a8] text-white">Attending</Button>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3">
+                <div className="text-center text-gray-700">You replied: <span className="font-semibold">{isAttending ? 'Attending' : 'Not attending'}</span>{isAttending && attendeeCount>0 && (<span> ({attendeeCount} {attendeeCount===1?'adult':'adults'})</span>)}</div>
+                <Button variant="outline" onClick={()=>{ setHasReplied(false); setIsAttending(null); commitState({ hasReplied: false, isAttending: null }); }} className="h-11 border-2 border-[#6b46c1] text-[#6b46c1]">Edit reply</Button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CalendarIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-gray-500"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" strokeWidth="2"/><line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="2"/><line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="2"/><line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="2"/></svg>
+  );
+}
+function ClockIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-gray-500"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/><polyline points="12,6 12,12 16,14" stroke="currentColor" strokeWidth="2"/></svg>
+  );
+}
+function GroupsIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-gray-500"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="2"/><circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="2"/><path d="M22 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" strokeWidth="2"/><path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" strokeWidth="2"/></svg>
+  );
+}
+function DocIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-gray-500"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" strokeWidth="2"/><polyline points="14,2 14,8 20,8" stroke="currentColor" strokeWidth="2"/><line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" strokeWidth="2"/><line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" strokeWidth="2"/><polyline points="10,9 9,9 8,9" stroke="currentColor" strokeWidth="2"/></svg>
+  );
+}
