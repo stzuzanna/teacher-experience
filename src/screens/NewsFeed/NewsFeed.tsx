@@ -125,10 +125,7 @@ export const NewsFeed: React.FC<NewsFeedProps> = ({
             <div className="w-full max-w-[600px] mx-auto">
               <div className="bg-white rounded-xl shadow-md border border-gray-100 p-5">
                 <button type="button" onClick={() => setShowComposer(true)} className="w-full text-left">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
-                      <span className="text-lg">🙂</span>
-                    </div>
+                  <div className="flex items-center">
                     <span className="text-[17px] text-gray-700">Start a new post</span>
                   </div>
                 </button>
