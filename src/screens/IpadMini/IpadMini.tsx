@@ -24,6 +24,7 @@ import { BottomNavBar } from "../../components/BottomNavBar";
 import { GlobalQuickActionsDrawer, QuickActionId } from "../../components/GlobalQuickActionsDrawer";
 import { NewsFeed } from "../NewsFeed/NewsFeed";
 import { Messages } from "../Messages/Messages";
+import { Notifications as NotificationsScreen } from "../Notifications/Notifications";
 import { DeviceContainer } from "../../components/DeviceContainer";
 import {
   Avatar,
@@ -625,6 +626,20 @@ export const IpadMini = (): JSX.Element => {
             setShowQuickActions(false);
             handleStatusClick(action);
           }}
+        />
+      </DeviceContainer>
+    );
+  }
+
+  // Render Notifications if "notifications" is active
+  if (activeNavItem === "notifications") {
+    return (
+      <DeviceContainer>
+        <NotificationsScreen
+          onNavigateBack={handleNavigateBack}
+          activeNavItem={activeNavItem}
+          onNavClick={handleBottomNavClick}
+          embedded
         />
       </DeviceContainer>
     );
