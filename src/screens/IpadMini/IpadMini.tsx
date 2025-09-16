@@ -674,18 +674,6 @@ export const IpadMini = (): JSX.Element => {
           </div>
 
           <nav className="inline-flex items-center gap-6 relative flex-[0_0_auto]">
-            <Button variant="ghost" size="icon" className="h-auto">
-              <SearchIcon className="w-6 h-6" />
-            </Button>
-
-            <Button variant="ghost" size="icon" className="h-auto">
-              <MessageSquareIcon className="w-6 h-6" />
-            </Button>
-
-            <Button variant="ghost" size="icon" className="h-auto">
-              <BellIcon className="w-7 h-7" />
-            </Button>
-
             <Avatar className="w-10 h-10">
               <AvatarImage src="/avatar.png" alt="User avatar" />
               <AvatarFallback>U</AvatarFallback>
