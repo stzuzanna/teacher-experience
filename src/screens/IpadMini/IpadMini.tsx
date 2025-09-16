@@ -649,24 +649,14 @@ export const IpadMini = (): JSX.Element => {
   return (
     <DeviceContainer>
       <header className="flex w-full h-[72px] items-center justify-between px-6 py-3 bg-white flex-shrink-0">
-          <div className="inline-flex items-center gap-1 relative flex-[0_0_auto]">
-            <Button
-              variant="outline"
-              size="icon"
-              className="w-9 h-9 rounded-3xl border-[#c6c6d2] bg-white"
-            >
-              <ArrowLeftIcon className="w-[18px] h-[18px]" />
-            </Button>
-
-            <div className="inline-flex items-center gap-4 relative flex-[0_0_auto]">
-              <div className="inline-flex flex-col items-center justify-center gap-2 p-1 relative self-stretch flex-[0_0_auto]">
-                <div className="inline-flex items-center gap-1 relative flex-[0_0_auto]">
-                  <div className="inline-flex flex-col items-center justify-center gap-2 relative flex-[0_0_auto]">
-                    <div className="inline-flex items-center justify-center gap-1 relative flex-[0_0_auto]">
-                      <h1 className="relative w-fit mt-[-1.00px] font-MF-headings-h6 font-[number:var(--MF-headings-h6-font-weight)] text-[#2c2c39] text-[length:var(--MF-headings-h6-font-size)] text-center tracking-[var(--MF-headings-h6-letter-spacing)] leading-[var(--MF-headings-h6-line-height)] whitespace-nowrap [font-style:var(--MF-headings-h6-font-style)]">
-                        Toddlers overview
-                      </h1>
-                    </div>
+          <div className="inline-flex items-center gap-4 relative flex-[0_0_auto]">
+            <div className="inline-flex flex-col items-center justify-center gap-2 p-1 relative self-stretch flex-[0_0_auto]">
+              <div className="inline-flex items-center gap-1 relative flex-[0_0_auto]">
+                <div className="inline-flex flex-col items-center justify-center gap-2 relative flex-[0_0_auto]">
+                  <div className="inline-flex items-center justify-center gap-1 relative flex-[0_0_auto]">
+                    <h1 className="relative w-fit mt-[-1.00px] font-MF-headings-h6 font-[number:var(--MF-headings-h6-font-weight)] text-[#2c2c39] text-[length:var(--MF-headings-h6-font-size)] text-center tracking-[var(--MF-headings-h6-letter-spacing)] leading-[var(--MF-headings-h6-line-height)] whitespace-nowrap [font-style:var(--MF-headings-h6-font-style)]">
+                      Toddlers overview
+                    </h1>
                   </div>
                 </div>
               </div>
