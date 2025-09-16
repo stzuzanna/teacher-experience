@@ -41,7 +41,7 @@ export const Notifications: React.FC<NotificationsProps> = ({
   const content = (
     <>
       {/* Purple header */}
-      <header className="bg-[#6b46c1] px-4 py-3 flex items-center justify-between text-white">
+      <header className="bg-[#4E169C] px-4 py-3 flex items-center justify-between text-white">
         <span className="font-medium">Notifications</span>
         <div className="flex items-center gap-3">
           <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
@@ -49,7 +49,7 @@ export const Notifications: React.FC<NotificationsProps> = ({
           </Button>
           <Avatar className="w-8 h-8">
             <AvatarImage src="/avatar.png" alt="User" />
-            <AvatarFallback className="bg-white text-[#6b46c1] text-sm">U</AvatarFallback>
+            <AvatarFallback className="bg-white text-[#4E169C] text-sm">U</AvatarFallback>
           </Avatar>
         </div>
       </header>
@@ -68,9 +68,9 @@ export const Notifications: React.FC<NotificationsProps> = ({
               ) : (
                 <div className="w-12 h-12 mt-1 rounded-full bg-purple-50 flex items-center justify-center">
                   {n.type === 'billing' ? (
-                    <BadgeCheckIcon className="w-6 h-6 text-[#6b46c1]" />
+                    <BadgeCheckIcon className="w-6 h-6 text-[#4E169C]" />
                   ) : (
-                    <BellIcon className="w-6 h-6 text-[#6b46c1]" />
+                    <BellIcon className="w-6 h-6 text-[#4E169C]" />
                   )}
                 </div>
               )}

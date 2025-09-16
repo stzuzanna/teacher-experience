@@ -23,7 +23,7 @@ export const DeviceContainer: React.FC<DeviceContainerProps> = ({ children }) =>
               window.dispatchEvent(new CustomEvent('global-add-click'));
             } catch {}
           }}
-          className="absolute bottom-20 right-6 z-50 w-12 h-12 rounded-full bg-[#6b46c1] text-white shadow-xl hover:bg-[#5d3eb0] active:scale-95 transition flex items-center justify-center"
+          className="absolute bottom-20 right-6 z-50 w-12 h-12 rounded-full bg-[#4E169C] text-white shadow-xl hover:bg-[#4E169C] active:scale-95 transition flex items-center justify-center"
         >
           <span className="text-2xl leading-none">+</span>
         </button>

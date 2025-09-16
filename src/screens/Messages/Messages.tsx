@@ -440,7 +440,7 @@ export const Messages: React.FC<MessagesProps> = ({
     const chatContent = (
       <>
         {/* Chat Header */}
-        <header className="bg-[#6b46c1] px-6 py-4 flex items-center justify-between flex-shrink-0">
+        <header className="bg-[#4E169C] px-6 py-4 flex items-center justify-between flex-shrink-0">
           <Button
             variant="ghost"
             size="icon"
@@ -495,7 +495,7 @@ export const Messages: React.FC<MessagesProps> = ({
                   {/* Message Content */}
                   <div className={`max-w-[280px] p-3 rounded-2xl ${
                     message.sender === 'sandra'
-                      ? 'bg-[#6b46c1] text-white ml-auto rounded-br-md' 
+                      ? 'bg-[#4E169C] text-white ml-auto rounded-br-md' 
                       : 'bg-white text-gray-700 rounded-bl-md shadow-sm'
                   }`}>
                     <p className="text-sm leading-relaxed">
@@ -513,7 +513,7 @@ export const Messages: React.FC<MessagesProps> = ({
                     {message.spanishContent && (
                       <button
                         onClick={() => toggleTranslation(message.id)}
-                        className="text-xs text-[#6b46c1] hover:underline cursor-pointer"
+                        className="text-xs text-[#4E169C] hover:underline cursor-pointer"
                       >
                         {translatedMessages.has(message.id) ? 'Original' : 'Traducir'}
                       </button>
@@ -593,7 +593,7 @@ export const Messages: React.FC<MessagesProps> = ({
               <Button
                 type="submit"
                 size="icon"
-                className="absolute right-1 top-1 w-8 h-8 bg-[#6b46c1] hover:bg-[#6b46c1]/90 rounded-full"
+                className="absolute right-1 top-1 w-8 h-8 bg-[#4E169C] hover:bg-[#4E169C]/90 rounded-full"
                 disabled={!newMessage.trim()}
               >
                 <SendIcon className="w-4 h-4" />
@@ -623,10 +623,10 @@ export const Messages: React.FC<MessagesProps> = ({
   const listContent = (
     <>
       {/* Purple Header */}
-      <header className="bg-[#6b46c1] px-6 py-4 flex items-center justify-between flex-shrink-0">
+      <header className="bg-[#4E169C] px-6 py-4 flex items-center justify-between flex-shrink-0">
         <div className="flex items-center">
           <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center mr-4">
-            <div className="w-6 h-6 bg-[#6b46c1] rounded-sm"></div>
+            <div className="w-6 h-6 bg-[#4E169C] rounded-sm"></div>
           </div>
           <h1 className="text-white font-medium text-lg">Messages</h1>
         </div>
@@ -637,7 +637,7 @@ export const Messages: React.FC<MessagesProps> = ({
           </Button>
           <Avatar className="w-8 h-8">
             <AvatarImage src="/avatar.png" alt="User" />
-            <AvatarFallback className="bg-white text-[#6b46c1] text-sm">U</AvatarFallback>
+            <AvatarFallback className="bg-white text-[#4E169C] text-sm">U</AvatarFallback>
           </Avatar>
         </div>
       </header>

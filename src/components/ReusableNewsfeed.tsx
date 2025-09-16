@@ -338,7 +338,7 @@ function RenderPollPost({ post, onVote, userVotes }: { post: PollPost; onVote: (
               onClick={() => onVote(opt.id)}
               disabled={disabled}
               className={`relative flex items-center justify-between rounded-xl border px-4 py-3 text-left overflow-hidden ${
-                isSelected ? 'border-[#6b46c1] bg-[#f5efff]' : 'border-gray-200 bg-white hover:bg-gray-50'
+                isSelected ? 'border-[#4E169C] bg-[#f5efff]' : 'border-gray-200 bg-white hover:bg-gray-50'
               } ${disabled ? 'cursor-default opacity-90' : 'cursor-pointer'}`}
             >
               <div
@@ -348,14 +348,14 @@ function RenderPollPost({ post, onVote, userVotes }: { post: PollPost; onVote: (
               <div className="relative z-10 flex items-center gap-3 text-gray-900">
                 <span
                   className={`inline-flex items-center justify-center w-5 h-5 rounded-md border ${
-                    isSelected ? 'bg-[#6b46c1] border-[#6b46c1] text-white' : 'bg-white border-gray-300 text-transparent'
+                    isSelected ? 'bg-[#4E169C] border-[#4E169C] text-white' : 'bg-white border-gray-300 text-transparent'
                   }`}
                 >
                   ✓
                 </span>
                 <span className="text-sm">{opt.text}</span>
               </div>
-              <span className="relative z-10 font-semibold text-[#6b46c1]">{pct}%</span>
+              <span className="relative z-10 font-semibold text-[#4E169C]">{pct}%</span>
             </button>
           );
         })}
@@ -685,7 +685,7 @@ function EventCard({ post, onOpenRSVP }: { post: EventPost; onOpenRSVP: () => vo
             </div>
           </div>
 
-          <Button className="mt-2 bg-[#6b46c1] hover:bg-[#5a39a8]" onClick={onOpenRSVP}>Show and RSVP</Button>
+          <Button className="mt-2 bg-[#4E169C] hover:bg-[#4E169C]" onClick={onOpenRSVP}>Show and RSVP</Button>
 
           {post.recipientsText && (
             <div className="text-xs text-gray-500">{post.recipientsText}</div>
@@ -708,7 +708,7 @@ function EventRSVPOverlay({ post, state, onClose, onStateChange }: { post: Event
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
       <div className="w-full max-w-[720px] bg-white rounded-2xl shadow-2xl overflow-hidden">
-        <header className="bg-[#6b46c1] text-white">
+        <header className="bg-[#4E169C] text-white">
           <div className="flex items-center justify-between px-4 py-3">
             <button aria-label="Close" className="p-2" onClick={onClose}>←</button>
             <div className="font-semibold">Calendar</div>
@@ -748,12 +748,12 @@ function EventRSVPOverlay({ post, state, onClose, onStateChange }: { post: Event
             {!hasReplied ? (
               <div className="flex gap-4">
                 <Button variant="outline" onClick={()=>{ setIsAttending(false); setHasReplied(true); commitState({ isAttending: false, hasReplied: true }); }} className="flex-1 h-11 border-2 border-gray-200 bg-white text-gray-700">Not attending</Button>
-                <Button onClick={()=>{ setIsAttending(true); setHasReplied(true); commitState({ isAttending: true, hasReplied: true }); }} className="flex-1 h-11 bg-[#6b46c1] hover:bg-[#5a39a8] text-white">Attending</Button>
+                <Button onClick={()=>{ setIsAttending(true); setHasReplied(true); commitState({ isAttending: true, hasReplied: true }); }} className="flex-1 h-11 bg-[#4E169C] hover:bg-[#4E169C] text-white">Attending</Button>
               </div>
             ) : (
               <div className="flex flex-col gap-3">
                 <div className="text-center text-gray-700">You replied: <span className="font-semibold">{isAttending ? 'Attending' : 'Not attending'}</span>{isAttending && attendeeCount>0 && (<span> ({attendeeCount} {attendeeCount===1?'adult':'adults'})</span>)}</div>
-                <Button variant="outline" onClick={()=>{ setHasReplied(false); setIsAttending(null); commitState({ hasReplied: false, isAttending: null }); }} className="h-11 border-2 border-[#6b46c1] text-[#6b46c1]">Edit reply</Button>
+                <Button variant="outline" onClick={()=>{ setHasReplied(false); setIsAttending(null); commitState({ hasReplied: false, isAttending: null }); }} className="h-11 border-2 border-[#4E169C] text-[#4E169C]">Edit reply</Button>
               </div>
             )}
           </div>

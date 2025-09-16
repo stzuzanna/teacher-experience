@@ -79,12 +79,12 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
             >
               <IconComponent 
                 className={`w-5 h-5 ${
-                  item.isActive ? 'text-[#8c4ce5]' : 'text-gray-500'
+                  item.isActive ? 'text-[#4E169C]' : 'text-gray-500'
                 }`} 
               />
               <span 
                 className={`text-xs font-normal ${
-                  item.isActive ? 'text-[#8c4ce5]' : 'text-gray-500'
+                  item.isActive ? 'text-[#4E169C]' : 'text-gray-500'
                 }`}
               >
                 {item.label}

@@ -131,7 +131,7 @@ export const GlobalQuickActionsDrawer: React.FC<GlobalQuickActionsDrawerProps> =
               <label className="flex items-center gap-2 text-gray-600">
                 <input
                   type="checkbox"
-                  className="accent-[#6b46c1]"
+                  className="accent-[#4E169C]"
                   checked={allSelected}
                   onChange={(e) => setSelectedIds(e.target.checked ? allIds : [])}
                 />
@@ -151,7 +151,7 @@ export const GlobalQuickActionsDrawer: React.FC<GlobalQuickActionsDrawerProps> =
                       )
                     }
                     className={`flex flex-col items-center gap-2 p-2 rounded-xl border ${
-                      selected ? "border-[#6b46c1] bg-purple-50" : "border-gray-200 hover:bg-gray-50"
+                      selected ? "border-[#4E169C] bg-purple-50" : "border-gray-200 hover:bg-gray-50"
                     }`}
                   >
                     <div className="w-16 h-16 rounded-full bg-gray-200 overflow-hidden border-2 border-white shadow">

@@ -113,7 +113,7 @@ export const NewsFeed: React.FC<NewsFeedProps> = ({
   const recipientOptions: { id: string; label: string; count: number; subtitle: string; avatar?: string; initials?: string; bgColor?: string; textColor?: string }[] = [
     { id: 'all-children', label: 'All children', count: 50, subtitle: '50 children', avatar: '/avatar-1.png' },
     { id: 'infants', label: 'Infants', count: 12, subtitle: '12 children', initials: 'I', bgColor: 'bg-[#f6f1fd]', textColor: 'text-[#4e169c]' },
-    { id: 'toddlers', label: 'Toddlers', count: 20, subtitle: '20 children', initials: 'T', bgColor: 'bg-[#efe7ff]', textColor: 'text-[#6b46c1]' },
+    { id: 'toddlers', label: 'Toddlers', count: 20, subtitle: '20 children', initials: 'T', bgColor: 'bg-[#efe7ff]', textColor: 'text-[#4E169C]' },
     { id: 'all-staff', label: 'All staff', count: 8, subtitle: '8 staff' },
   ];
 
@@ -328,10 +328,10 @@ export const NewsFeed: React.FC<NewsFeedProps> = ({
   const content = (
     <>
       {/* Purple Header closer to screenshot */}
-        <header className="bg-[#6b46c1] px-4 py-3 flex items-center justify-between text-white">
+        <header className="bg-[#4E169C] px-4 py-3 flex items-center justify-between text-white">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-              <div className="w-4 h-4 bg-[#6b46c1] rounded-sm" />
+              <div className="w-4 h-4 bg-[#4E169C] rounded-sm" />
             </div>
             <span className="font-medium">Newsfeed</span>
           </div>
@@ -342,7 +342,7 @@ export const NewsFeed: React.FC<NewsFeedProps> = ({
             </Button>
             <Avatar className="w-8 h-8">
               <AvatarImage src="/avatar.png" alt="User" />
-              <AvatarFallback className="bg-white text-[#6b46c1] text-sm">U</AvatarFallback>
+              <AvatarFallback className="bg-white text-[#4E169C] text-sm">U</AvatarFallback>
             </Avatar>
           </div>
         </header>
@@ -440,7 +440,7 @@ export const NewsFeed: React.FC<NewsFeedProps> = ({
                     <div className="font-medium">To:</div>
                     <div className="flex flex-wrap gap-2">
                       {recipients.map((r, idx) => (
-                        <span key={idx} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#efe7ff] text-[#6b46c1] text-sm">
+                        <span key={idx} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#efe7ff] text-[#4E169C] text-sm">
                           {r}
                           <button aria-label="Remove" onClick={(e)=>{ e.stopPropagation(); setRecipients(prev => prev.filter((_,i)=>i!==idx)); }}>×</button>
                         </span>

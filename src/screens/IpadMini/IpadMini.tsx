@@ -877,13 +877,13 @@ export const IpadMini = (): JSX.Element => {
                   <h3 className="text-xl font-semibold text-gray-900 px-2 mb-4">Select children to {quickActionId === 'checkout' ? 'check out' : quickActionId === 'sleep' ? 'log sleep for' : quickActionId === 'diaper' ? 'log diaper/toilet for' : 'check in'}</h3>
                   <div className="flex items-center justify-between px-2 mb-3">
                     <div className="text-gray-700 font-medium">Demo classroom</div>
-                    <label className="flex items-center gap-2 text-gray-600"><input type="checkbox" className="accent-[#6b46c1]" checked={quickSelectedIds.length === children.length} onChange={(e)=> setQuickSelectedIds(e.target.checked ? children.map(c=>c.id) : [])} /> Select all</label>
+                    <label className="flex items-center gap-2 text-gray-600"><input type="checkbox" className="accent-[#4E169C]" checked={quickSelectedIds.length === children.length} onChange={(e)=> setQuickSelectedIds(e.target.checked ? children.map(c=>c.id) : [])} /> Select all</label>
                   </div>
                   <div className="grid grid-cols-3 gap-3 px-2 mb-4 max-h-60 overflow-auto">
                     {children.map((ch) => {
                       const selected = quickSelectedIds.includes(ch.id);
                       return (
-                        <button key={ch.id} type="button" onClick={()=> setQuickSelectedIds(prev => selected ? prev.filter(id=>id!==ch.id) : [...prev, ch.id])} className={`flex flex-col items-center gap-2 p-2 rounded-xl border ${selected? 'border-[#6b46c1] bg-purple-50' : 'border-gray-200 hover:bg-gray-50'}`}>
+                        <button key={ch.id} type="button" onClick={()=> setQuickSelectedIds(prev => selected ? prev.filter(id=>id!==ch.id) : [...prev, ch.id])} className={`flex flex-col items-center gap-2 p-2 rounded-xl border ${selected? 'border-[#4E169C] bg-purple-50' : 'border-gray-200 hover:bg-gray-50'}`}>
                           <div className="w-16 h-16 rounded-full bg-gray-200 overflow-hidden border-2 border-white shadow">
                             {ch.avatar ? <img src={ch.avatar} alt={ch.name} className="w-full h-full object-cover" /> : <div className="w-full h-full flex items-center justify-center text-gray-600">{ch.initials}</div>}
                           </div>

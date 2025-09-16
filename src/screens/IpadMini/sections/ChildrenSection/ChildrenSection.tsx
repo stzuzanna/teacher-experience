@@ -328,7 +328,7 @@ export const ChildrenSection = ({
                   })}
                   
                   {selectedChildren.includes(child.id) && (
-                    <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-[#8c4ce5] rounded-full flex items-center justify-center border-2 border-white">
+                    <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-[#4E169C] rounded-full flex items-center justify-center border-2 border-white">
                       <CheckIcon className="w-4 h-4 text-white" />
                     </div>
                   )}

@@ -1016,7 +1016,7 @@ export const RoomOverview: React.FC<RoomOverviewProps> = ({
             key={tab.id}
             variant="ghost"
             className={`h-16 px-3 py-0 inline-flex items-center gap-2 flex-[0_0_auto] rounded-[12px_12px_0px_0px] hover:bg-transparent ${
-              tab.isActive ? "border-b-[3px] border-[#8c4ce5]" : "border-b-0"
+              tab.isActive ? "border-b-[3px] border-[#4E169C]" : "border-b-0"
             }`}
             onClick={() => setActiveTab(tab.id)}
           >
